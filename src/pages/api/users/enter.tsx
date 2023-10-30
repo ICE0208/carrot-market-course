@@ -1,4 +1,5 @@
 import twilio from "twilio";
+import nodemailer from "nodemailer";
 import client from "@/libs/server/client";
 import withHandler, { ResponseType } from "@/libs/server/withHandler";
 import { NextApiRequest, NextApiResponse } from "next";
@@ -36,7 +37,31 @@ async function handler(
       body: `Your login token is ${payload}`,
     });
   }
-  console.log(token);
+  if (email) {
+    const transporter = nodemailer.createTransport({
+      service: process.env.EMAIL_SERVICE!,
+      auth: {
+        user: process.env.EMAIL_USER!,
+        pass: process.env.EMAIL_PW!,
+      },
+    });
+
+    const mailOptions = {
+      from: process.env.EMAIL_USER!,
+      to: email,
+      subject: "Carrot Market Verification Email",
+      html: `<strong>Your token is ${payload}</strong>`,
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.error(error);
+      } else {
+        console.log("Email Sent : ", info);
+      }
+    });
+  }
+
   return res.json({
     ok: true,
   });

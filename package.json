@@ -12,6 +12,7 @@
   "dependencies": {
     "@prisma/client": "^5.4.2",
     "next": "13.5.4",
+    "nodemailer": "^6.9.7",
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.47.0",
@@ -19,6 +20,7 @@
   },
   "devDependencies": {
     "@types/node": "^20",
+    "@types/nodemailer": "^6.4.13",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "autoprefixer": "^10",
