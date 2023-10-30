@@ -31,35 +31,33 @@ async function handler(
     },
   });
   if (phone) {
-    await twilioClient.messages.create({
-      messagingServiceSid: process.env.TWILIO_MSID,
-      to: process.env.PHONE_NUMBER!,
-      body: `Your login token is ${payload}`,
-    });
+    // await twilioClient.messages.create({
+    //   messagingServiceSid: process.env.TWILIO_MSID,
+    //   to: process.env.PHONE_NUMBER!,
+    //   body: `Your login token is ${payload}`,
+    // });
   }
   if (email) {
-    const transporter = nodemailer.createTransport({
-      service: process.env.EMAIL_SERVICE!,
-      auth: {
-        user: process.env.EMAIL_USER!,
-        pass: process.env.EMAIL_PW!,
-      },
-    });
-
-    const mailOptions = {
-      from: process.env.EMAIL_USER!,
-      to: email,
-      subject: "Carrot Market Verification Email",
-      html: `<strong>Your token is ${payload}</strong>`,
-    };
-
-    transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-        console.error(error);
-      } else {
-        console.log("Email Sent : ", info);
-      }
-    });
+    // const transporter = nodemailer.createTransport({
+    //   service: process.env.EMAIL_SERVICE!,
+    //   auth: {
+    //     user: process.env.EMAIL_USER!,
+    //     pass: process.env.EMAIL_PW!,
+    //   },
+    // });
+    // const mailOptions = {
+    //   from: process.env.EMAIL_USER!,
+    //   to: email,
+    //   subject: "Carrot Market Verification Email",
+    //   html: `<strong>Your token is ${payload}</strong>`,
+    // };
+    // transporter.sendMail(mailOptions, (error, info) => {
+    //   if (error) {
+    //     console.error(error);
+    //   } else {
+    //     console.log("Email Sent : ", info);
+    //   }
+    // });
   }
 
   return res.json({
