@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "connect-db": "pscale connect carrot-market --port 4000"
   },
   "dependencies": {
     "@prisma/client": "^5.4.2",
