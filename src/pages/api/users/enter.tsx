@@ -11,20 +11,44 @@ async function handler(
   res: NextApiResponse<ResponseType>,
 ) {
   const { phone, email } = req.body;
-  const user = phone ? { phone: +phone } : email ? { email } : null;
-  if (!user) return res.status(400).json({ ok: false });
+  const userInfo = phone ? { phone: +phone } : email ? { email } : null;
+  if (!userInfo) return res.status(400).json({ ok: false });
+  const user = await client.user.findUnique({
+    where: { ...userInfo },
+  });
+
+  // 기존 토큰 삭제
+  if (user) {
+    const oldTokens = await client.token.findMany({
+      where: {
+        userId: user.id,
+      },
+    });
+
+    // 이제 oldTokens를 비동기적으로 삭제합니다.
+    const deletionPromises = oldTokens.map((token) => {
+      return client.token.delete({
+        where: {
+          id: token.id,
+        },
+      });
+    });
+
+    await Promise.all(deletionPromises); // 모든 삭제 작업을 병렬로 실행
+  }
+
   const payload = Math.floor(100000 + Math.random() * 900000) + "";
-  const token = await client.token.create({
+  const newToken = await client.token.create({
     data: {
       payload,
       user: {
         connectOrCreate: {
           where: {
-            ...user,
+            ...userInfo,
           },
           create: {
             name: "Anonymous",
-            ...user,
+            ...userInfo,
           },
         },
       },
