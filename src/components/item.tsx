@@ -16,7 +16,7 @@ export default function Item({
   id,
 }: ItemProps) {
   return (
-    <Link href={`/items/${id}`} legacyBehavior>
+    <Link href={`/products/${id}`} legacyBehavior>
       <a className="flex cursor-pointer justify-between px-4 pt-5">
         <div className="flex space-x-4">
           <div className="h-20 w-20 rounded-md bg-gray-400" />
