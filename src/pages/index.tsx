@@ -7,14 +7,21 @@ import Head from "next/head";
 import useSWR from "swr";
 import { Product } from "@prisma/client";
 
+interface ProductWithFavsCnt extends Product {
+  _count: {
+    favs: number;
+  };
+}
+
 interface ProductsResponse {
   ok: boolean;
-  products: Product[];
+  products: ProductWithFavsCnt[];
 }
 
 const Home: NextPage = () => {
   const { user, isLoading } = useUser();
   const { data } = useSWR<ProductsResponse>("/api/products");
+  console.log(data);
 
   return (
     <Layout title="홈" hasTabBar>
@@ -29,7 +36,7 @@ const Home: NextPage = () => {
             title={product.name}
             price={product.price}
             comments={1}
-            hearts={1}
+            hearts={product._count.favs}
           />
         ))}
         <FloatingButton href="/products/upload">
